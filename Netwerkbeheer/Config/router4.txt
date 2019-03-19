@@ -1,0 +1,148 @@
+
+Current configuration : 2059 bytes
+!
+! Last configuration change at 08:33:36 UTC Mon Dec 17 2018
+!
+version 15.5
+service config
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+no platform punt-keepalive disable-kernel-core
+!
+hostname Router4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 5 $1$7b/B$zYe64qxk0cdHXztnv2G5/1
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+multilink bundle-name authenticated
+!
+!
+!
+!
+license udi pid ISR4321/K9 sn FDO22273YWH
+!
+spanning-tree extend system-id
+!
+!
+redundancy
+ mode none
+!
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ ip address dhcp
+ ip nat outside
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface Serial0/1/0
+ ip address 192.0.2.13 255.255.255.252
+ ip nat inside
+!
+interface Serial0/1/1
+ ip address 192.0.2.17 255.255.255.252
+ ip nat inside
+ clock rate 8000000
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+!
+router eigrp 1
+ network 192.0.2.12 0.0.0.3
+ network 192.0.2.16 0.0.0.3
+ redistribute static
+!
+ip nat inside source list 10 interface GigabitEthernet0/0/0 overload
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+ip tftp source-interface GigabitEthernet0
+ip route 0.0.0.0 0.0.0.0 172.22.255.254
+ip route 172.16.0.0 255.255.0.0 Serial0/1/0
+ip route 172.18.0.0 255.255.0.0 Serial0/1/1
+!
+!
+access-list 10 permit 172.16.0.0 0.0.255.255
+access-list 10 permit 172.18.0.0 0.0.255.255
+!
+!
+!
+control-plane
+!
+banner motd ^CAUTHORIZED ACCESS ONLY^C
+!
+line con 0
+ exec-timeout 5 0
+ password 7 0103140B510E051B72
+ logging synchronous
+ login
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ exec-timeout 5 0
+ password 7 08315E41031C060341
+ login
+line vty 5 15
+ exec-timeout 5 0
+ password 7 051B14002B494D1D4A
+ login
+!
+!
+end

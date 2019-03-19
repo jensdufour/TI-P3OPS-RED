@@ -1,0 +1,9 @@
+*.retry
+*/.vagrant/*
+*.log
+*.DS_Store
+.vagrant
+vagrant/ca_chain.pem
+Servers/alfa2.iso
+Fysiek/.~lock.Flowchart.ods#
+log.csv

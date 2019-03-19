@@ -1,0 +1,148 @@
+
+Current configuration : 2000 bytes
+!
+! Last configuration change at 08:12:25 UTC Mon Dec 17 2018
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+no platform punt-keepalive disable-kernel-core
+!
+hostname Router1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 5 $1$5nPP$zcRL5TjZiRTZ619E6mjAn1
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+
+no ip domain lookup
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+multilink bundle-name authenticated
+!
+!
+!
+!
+license udi pid ISR4321/K9 sn FDO2227425G
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+redundancy
+ mode none
+!
+!
+vlan internal allocation policy ascending
+no cdp run
+!
+!
+!
+!
+!
+!
+interface Tunnel1
+ ip address 192.168.2.2 255.255.255.0
+ tunnel source 192.0.2.6
+ tunnel destination 192.0.2.2
+!
+interface GigabitEthernet0/0/0
+ ip address 192.0.2.6 255.255.255.252
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ ip address 172.18.0.69 255.255.255.252
+ negotiation auto
+!
+interface Serial0/1/0
+ no ip address
+!
+interface Serial0/1/1
+ no ip address
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+!
+router eigrp 1
+ network 172.16.0.0
+ network 172.18.0.0
+ network 192.0.2.0 0.0.0.3
+ network 192.0.2.4 0.0.0.3
+ network 192.168.2.0
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+ip tftp source-interface GigabitEthernet0
+ip route 0.0.0.0 0.0.0.0 192.0.2.5
+ip route 172.16.1.0 255.255.255.192 172.16.0.69
+ip route 172.18.0.0 255.255.0.0 GigabitEthernet0/0/1
+!
+!
+!
+!
+!
+control-plane
+!
+banner motd ^CAuthorized Access Only^C
+!
+line con 0
+ exec-timeout 5 0
+ password 7 051B14002B494D1D4A
+ login
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ exec-timeout 5 0
+ password 7 1315051D0109073E78
+ login
+line vty 5 15
+ exec-timeout 5 0
+ password 7 1315051D0109073E78
+ login
+!
+!
+end

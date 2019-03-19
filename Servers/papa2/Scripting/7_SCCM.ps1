@@ -1,0 +1,1 @@
+D:\SCCM\SMSSETUP\BIN\X64\setup.exe /script E:\Scripts\config.ini

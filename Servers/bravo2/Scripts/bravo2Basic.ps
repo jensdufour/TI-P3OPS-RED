@@ -1,0 +1,14 @@
+#vars
+$hostname = "NS2"
+
+#IP adres pc, subent en DG
+New-NetIPAddress -InterfaceAlias "Ethernet0" -IPAddress "172.18.0.35" -PrefixLength 27 -DefaultGateway "172.18.0.33"
+
+#Alfa2 instellen als DNS server
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet0" -ServerAddresses "172.18.0.34","172.18.0.35"
+
+#Firewall uitschakelen: nodig voor te kunnen joinen
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+
+#Computernaam
+Rename-Computer -ComputerName $env:COMPUTERNAME  -newName $hostname -Force -Restart

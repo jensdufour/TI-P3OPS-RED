@@ -1,0 +1,1 @@
+Install-WindowsFeature -Name UpdateServices-Services,UpdateServices-DB -IncludeManagementTools
